@@ -34,7 +34,6 @@ app.get('/getAllOrders', async (req, res) => {
   }
 });
 
-// server.js
 app.delete('/completeOrder/:orderId', async (req, res) => {
   const orderId = req.params.orderId;
 
@@ -52,9 +51,40 @@ app.delete('/completeOrder/:orderId', async (req, res) => {
   }
 });
 
+app.post('/completeOrder/:orderId', async (req, res) => {
+  const orderId = req.params.orderId;
 
+  const transaction = await sequelize.transaction();
 
+  try {
+    const order = await Order.findByPk(orderId, { transaction });
 
+    if (order) {
+      await CompletedOrder.create({
+        name: order.name,
+        address: order.address,
+        phone: order.phone,
+        product: order.product,
+        quantity: order.quantity,
+      }, { transaction });
+
+      await order.destroy({ transaction });
+
+      await transaction.commit();
+
+      res.status(204).send();
+    } else {
+      res.status(404).json({ error: 'Order not found' });
+    }
+  } catch (error) {
+    console.error(error);
+
+    await transaction.rollback();
+
+    // Send the detailed error message in the response
+    res.status(500).json({ error: error.message });
+  }
+});
 
 app.get('/getAllCompletedOrders', async (req, res) => {
   try {

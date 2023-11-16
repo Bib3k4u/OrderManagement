@@ -1,14 +1,8 @@
 // models/completedorder.js
 const { DataTypes } = require('sequelize');
-const sequelize = require('../sequelize'); // Assuming sequelize instance is exported
+const sequelize = require('../sequelize');
 
 const CompletedOrder = sequelize.define('CompletedOrder', {
-  id: {
-    type: DataTypes.INTEGER,
-    autoIncrement: true,
-    primaryKey: true,
-    allowNull: false,
-  },
   name: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -29,11 +23,6 @@ const CompletedOrder = sequelize.define('CompletedOrder', {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
-});
-
-// Sync the model with the database
-CompletedOrder.sync().then(() => {
-  console.log('CompletedOrder model synchronized with database');
 });
 
 module.exports = CompletedOrder;
