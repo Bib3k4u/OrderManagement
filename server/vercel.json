@@ -1,0 +1,12 @@
+{
+    "version": 2,
+    "builds": [{ "src": "server.js", "use": "@vercel/node" }],
+    "routes": [
+      { "src": "/createOrder", "dest": "/server.js" },
+      { "src": "/getAllOrders", "dest": "/server.js" },
+      { "src": "/completeOrder/:orderId", "dest": "/server.js" },
+      { "src": "/getAllCompletedOrders", "dest": "/server.js" },
+      { "src": "/(.*)", "dest": "/server.js" }
+    ]
+  }
+  
